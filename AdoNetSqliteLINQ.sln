@@ -3,12 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35219.272
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoNetSqliteLINQ", "AdoNetSqliteLINQ\AdoNetSqliteLINQ.csproj", "{11D52065-CA64-45E4-9DE5-5E152380A94B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdoNetSqliteLINQ", "AdoNetSqliteLINQ\AdoNetSqliteLINQ.csproj", "{11D52065-CA64-45E4-9DE5-5E152380A94B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{C9360C11-B941-4564-8090-D824F55A9D6A}"
 	ProjectSection(SolutionItems) = preProject
-		NorthwindSQLite.sqlite = NorthwindSQLite.sqlite
 		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{76BB6EFA-EF5C-4F8D-A158-975CF9D3B966}"
+	ProjectSection(SolutionItems) = preProject
+		AdoNetSqliteLINQ\bin\Debug\net8.0\Data\NorthwindSQLite.sqlite = AdoNetSqliteLINQ\bin\Debug\net8.0\Data\NorthwindSQLite.sqlite
 	EndProjectSection
 EndProject
 Global
