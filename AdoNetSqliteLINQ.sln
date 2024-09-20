@@ -7,12 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdoNetSqliteLINQ", "AdoNetS
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{C9360C11-B941-4564-8090-D824F55A9D6A}"
 	ProjectSection(SolutionItems) = preProject
+		AdoNetSqliteLINQ\bin\Debug\net8.0\NorthwindSQLite.sqlite = AdoNetSqliteLINQ\bin\Debug\net8.0\NorthwindSQLite.sqlite
 		README.md = README.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{76BB6EFA-EF5C-4F8D-A158-975CF9D3B966}"
-	ProjectSection(SolutionItems) = preProject
-		AdoNetSqliteLINQ\bin\Debug\net8.0\Data\NorthwindSQLite.sqlite = AdoNetSqliteLINQ\bin\Debug\net8.0\Data\NorthwindSQLite.sqlite
 	EndProjectSection
 EndProject
 Global
