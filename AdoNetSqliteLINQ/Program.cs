@@ -12,9 +12,11 @@ namespace AdoNetSqliteLINQ
             // SQL запрос для получения данных о клиентах
             string sqlExpression = "SELECT CustomerID, CompanyName, Country, ContactTitle FROM Customers";
 
+            string ProjectDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.Parent.FullName;
+
             string relativePathToDB = Path.Combine("NorthwindSQLite.sqlite");
 
-            string absolutePathToDB = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePathToDB);
+            string absolutePathToDB = Path.Combine(ProjectDirectory, relativePathToDB);
 
             // Строка подключения к базе данных
             var connectionString = $"Data Source={absolutePathToDB}";
