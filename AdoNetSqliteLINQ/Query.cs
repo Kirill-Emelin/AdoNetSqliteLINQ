@@ -1,21 +1,23 @@
-﻿using System.Diagnostics.Metrics;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AdoNetSqliteLINQ
 {
-    internal class LinqQuery1
+    class Query
     {
         /// <summary>
-        /// Метод для сортировки и вывода продуктов по имени
+        /// Метод для вывода всех продуктов
         /// </summary>
-        /// <param name="customers"></param>
-        public static void SortByProductName(List<Product> products)
+        /// <param name="products"></param>
+        public static void GetAllProducts(List<Product> products)
         {
-            var SortedProducts = products.OrderBy(p => p.ProductName);
-
             Console.WriteLine($"{"ProductID",-15} {"ProductName",-40} {"CategoryID",-15} {"UnitPrice",-20} {"UnitsInStock",-20}");
             Console.WriteLine(new string('-', 120));
 
-            foreach (var product in SortedProducts)
+            foreach (var product in products)
             {
                 Console.WriteLine($"{product.ProductID,-15} {product.ProductName,-40} {product.CategoryID,-15} {product.UnitPrice,-20} {product.UnitsInStock,-20}");
             }

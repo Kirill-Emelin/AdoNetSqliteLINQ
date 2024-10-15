@@ -1,21 +1,20 @@
-﻿using System.Diagnostics.Metrics;
-
-namespace AdoNetSqliteLINQ
+﻿namespace AdoNetSqliteLINQ
 {
-    internal class LinqQuery1
+    internal class LinqQuery3
     {
         /// <summary>
-        /// Метод для сортировки и вывода продуктов по имени
+        /// Метод для вывода продуктов по возрастанию цены
         /// </summary>
         /// <param name="customers"></param>
-        public static void SortByProductName(List<Product> products)
+        /// <param name="contactTitle"></param>
+        public static void SortByPriceAsc(List<Product> products)
         {
-            var SortedProducts = products.OrderBy(p => p.ProductName);
+            var SortedByPrice = products.OrderBy(p => p.UnitPrice);
 
             Console.WriteLine($"{"ProductID",-15} {"ProductName",-40} {"CategoryID",-15} {"UnitPrice",-20} {"UnitsInStock",-20}");
             Console.WriteLine(new string('-', 120));
 
-            foreach (var product in SortedProducts)
+            foreach (var product in SortedByPrice)
             {
                 Console.WriteLine($"{product.ProductID,-15} {product.ProductName,-40} {product.CategoryID,-15} {product.UnitPrice,-20} {product.UnitsInStock,-20}");
             }

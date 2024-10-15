@@ -9,25 +9,11 @@ namespace AdoNetSqliteLINQ
         {
             DataSet ds = new DataSet();
 
-            // SQL запрос для получения данных о клиентах
-            string sqlExpression = "SELECT CustomerID, CompanyName, Country, ContactTitle FROM Customers";
-
-            string ProjectDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.Parent.FullName;
-
-            string relativePathToDB = Path.Combine("NorthwindSQLite.sqlite");
-
-            string absolutePathToDB = Path.Combine(ProjectDirectory, relativePathToDB);
+            // SQL запрос для получения данных о продуктах
+            string sqlExpression = "SELECT ProductID, ProductName, CategoryID, UnitPrice, UnitsInStock FROM Products";
 
             // Строка подключения к базе данных
-            var connectionString = $"Data Source={absolutePathToDB}";
-
-            // Проверяем наличие файла базы данных
-            if (!File.Exists(absolutePathToDB))
-            {
-                // Если файл базы данных не найден выводим сообщение
-                Console.WriteLine($"Database file not found at: {absolutePathToDB}");
-                return;
-            }
+            var connectionString = $"Data Source=NorthwindSQLite.sqlite";
 
             // Открываем подключение к базе данных
             using (var connection = new SqliteConnection(connectionString))
@@ -41,43 +27,52 @@ namespace AdoNetSqliteLINQ
                 using (SqliteDataReader reader = command.ExecuteReader())
                 { 
                     // Создаем DataTable и загружаем в него данные из reader
-                    DataTable customersTable = new DataTable("Customers");
+                    DataTable productsTable = new DataTable("Products");
 
-                    customersTable.Load(reader);
+                    productsTable.Load(reader);
 
                     // Добавляем таблицу в DataSet
-                    ds.Tables.Add(customersTable);
+                    ds.Tables.Add(productsTable);
                 }
                 // Закрываем подключение к базе данных
                 connection.Close();
             }
 
-            DataTable customersTableInMemory = ds.Tables["Customers"];
+            DataTable productsTableInMemory = ds.Tables["Products"];
 
-            // Создаем список для хранения объектов Customer
-            List<Customer> customers = new List<Customer>();
+            // Создаем список для хранения объектов Product
+            List<Product> products = new List<Product>();
 
-            if (customersTableInMemory != null)
+            if (productsTableInMemory != null)
             {
-                // Преобразуем строки из DataTable в объекты Customer
-                foreach (DataRow row in customersTableInMemory.Rows)
+                // Преобразуем строки из DataTable в объекты Product
+                foreach (DataRow row in productsTableInMemory.Rows)
                 {
-                    var customer = new Customer
+                    var product = new Product
                     {
-                        CustomerID = row["CustomerID"].ToString(),
-                        CompanyName = row["CompanyName"].ToString(),
-                        Country = row["Country"].ToString(),
-                        ContactTitle = row["ContactTitle"].ToString()
+                        ProductID = row["ProductID"].ToString(),
+                        ProductName = row["ProductName"].ToString(),
+                        CategoryID = row["CategoryID"].ToString(),
+                        UnitPrice = row["UnitPrice"],
+                        UnitsInStock = Convert.ToInt32(row["UnitsInStock"])
                     };
-                    customers.Add(customer);
+                    products.Add(product);
                 }
                 // Просим пользователя выбрать, что он хочет вывести
-                Console.WriteLine("Введите 1 чтобы вывести всех клиентов. 2 чтобы вывести по стране.");
+                Console.WriteLine("Введите:\n" +
+                    "1 чтобы отсортировать продукты по имени (ProductName)\n" +
+                    "2 чтобы вывести продукты, которых нет на складе\n" +
+                    "3 чтобы вывести продукты, отсортированные по цене (от дешевых к дорогим)\n" +
+                    "4 чтобы узнать минимальную и максимальную цену продукта\n" +
+                    "5 чтобы вывести продукты, отсортированные по убыванию цены (от дорогих к дешевым)\n" +
+                    "6 чтобы вывести все продукты в указанной категории\n" +
+                    "7 чтобы вывести количество продуктов на складе и отсутствующих на складе\n" +
+                    "8 чтобы вывести все продукты");
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Table 'Customers' not found in DataSet");
+                Console.WriteLine("Table 'Products' not found in DataSet");
             }
 
             // Получаем выбор пользователя
@@ -87,31 +82,61 @@ namespace AdoNetSqliteLINQ
             switch (choice)
             {
                 case 1:
-                    // Вывод всех клиентов
-                    LinqQuery1.GetAllCustomers(customers);
+                    // Сортируем продукты по имени (ProductName) и выводим результат
+                    LinqQuery1.SortByProductName(products);
                     break;
 
                 case 2:
-                    // Запрашиваем у пользователя название страны
-                    Console.WriteLine("Введите страну");
-                    string country = Console.ReadLine();
-                    // Выводим клиентов, которые находятся в указанной стране
-                    LinqQuery2.GetCustomersByCountry(customers, country);
+                    // Выводим продукты, которых нет на складе (UnitsInStock == 0)
+                    LinqQuery2.GetOutOfStock(products);
+                    break;
+
+                case 3:
+                    // Сортируем продукты по возрастанию цены и выводим результат
+                    LinqQuery3.SortByPriceAsc(products);
+                    break;
+
+                case 4:
+                    // Выводим минимальную и максимальную цену среди продуктов
+                    LinqQuery4.GetMaxPrice(products);
+                    break;
+
+                case 5:
+                    // Сортируем продукты по убыванию цены и выводим результат
+                    LinqQuery5.SortByPriceDesc(products);
+                    break;
+
+                case 6:
+                    // Запрашиваем ID категории и выводим продукты из этой категории.
+                    Console.WriteLine("Введите ID категории:");
+                    string categoryId = Console.ReadLine();
+                    LinqQuery6.GetByCategory(products, categoryId);
+                    break;
+
+                case 7:
+                    // Выводим количество продуктов на складе и отсутствующих на складе
+                    LinqQuery7.SortByPriceDescasd(products);
+                    break;
+
+                case 8:
+                    // Выводим все продукты
+                    Query.GetAllProducts(products);
                     break;
 
                 default:
                     // Сообщаем о неверном выборе
-                    Console.WriteLine("Неверный выбор");
+                    Console.WriteLine("Неверный выбор, попробуйте снова");
                     break;
             }
             Console.Read();
         }
     }
-    public class Customer
+    public class Product
     {
-        public string CustomerID { get; set; }
-        public string CompanyName { get; set; }
-        public string Country { get; set; }
-        public string ContactTitle { get; set; }
+        public string ProductID { get; set; }
+        public string ProductName { get; set; }
+        public string CategoryID { get; set; }
+        public object UnitPrice { get; set; }
+        public int UnitsInStock { get; set; }
     }
 }

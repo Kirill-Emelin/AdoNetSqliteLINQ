@@ -3,21 +3,20 @@
     internal class LinqQuery2
     {
         /// <summary>
-        /// Метод для вывода клиентов с указанной страной
+        /// Метод для вывода списка продуктов отсутствующих на складе.
         /// </summary>
         /// <param name="customers"></param>
         /// <param name="country"></param>
-        public static void GetCustomersByCountry(List<Customer> customers, string country)
+        public static void GetOutOfStock(List<Product> products)
         {
-            // Отбираем клиентов, страна которых совпадает с вводом пользователя
-            var filteredСountry = customers.Where(c => c.Country == country);
+            var OutOfStockProducts = products.Where(p => p.UnitsInStock == 0);
 
-            Console.WriteLine($"{"CustomerID",-15} {"CompanyName",-40} {"Country",-15} {"ContactTitle",-20}");
+            Console.WriteLine($"{"ProductID",-15} {"ProductName",-40} {"CategoryID",-15} {"UnitPrice",-20} {"UnitsInStock",-20}");
             Console.WriteLine(new string('-', 120));
 
-            foreach (var customer in filteredСountry)
+            foreach (var product in OutOfStockProducts)
             {
-                Console.WriteLine($"{customer.CustomerID,-15} {customer.CompanyName,-40} {customer.Country,-15} {customer.ContactTitle,-20}");
+                Console.WriteLine($"{product.ProductID,-15} {product.ProductName,-40} {product.CategoryID,-15} {product.UnitPrice,-20} {product.UnitsInStock,-20}");
             }
         }
     }
