@@ -10,7 +10,10 @@ namespace AdoNetSqliteLINQ
             DataSet ds = new DataSet();
 
             // SQL запрос для получения данных о продуктах
-            string sqlExpression = "SELECT ProductID, ProductName, CategoryID, UnitPrice, UnitsInStock FROM Products";
+            string sqlExpression = @"SELECT Products.ProductID, Products.ProductName, Products.CategoryID, 
+            Categories.CategoryName, Products.UnitPrice, Products.UnitsInStock 
+            FROM Products
+            JOIN Categories ON Products.CategoryID = Categories.CategoryID";
 
             // Строка подключения к базе данных
             var connectionString = $"Data Source=NorthwindSQLite.sqlite";
@@ -52,7 +55,7 @@ namespace AdoNetSqliteLINQ
                     {
                         ProductID = row["ProductID"].ToString(),
                         ProductName = row["ProductName"].ToString(),
-                        CategoryID = row["CategoryID"].ToString(),
+                        CategoryName = row["CategoryName"].ToString(),
                         UnitPrice = row["UnitPrice"],
                         UnitsInStock = Convert.ToInt32(row["UnitsInStock"])
                     };
@@ -135,7 +138,7 @@ namespace AdoNetSqliteLINQ
     {
         public string ProductID { get; set; }
         public string ProductName { get; set; }
-        public string CategoryID { get; set; }
+        public string CategoryName{ get; set; }
         public object UnitPrice { get; set; }
         public int UnitsInStock { get; set; }
     }
